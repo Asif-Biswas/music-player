@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <style>
+      @media (min-width:601px) {
+        .flexLarge{display: flex; justify-content: space-around;}
+        #songList{margin-left: 36px;}
+      }
+      @media (max-width:600px) {
+        #songList{margin-left: 4px;}
+      }
+      .hide{display: none!important;}
+      .green{background-color: green;}
+    </style>
+</head>
+<body>
+  <div style="background-image: linear-gradient(rgb(100,2,2), rgb(46, 12, 12)); margin: -8px; min-height: 102vh;">
+
+    <div style="margin-top: -24px; padding-top: 16px;">
+      <h1 style="color: white; padding-left: 16px;">My PlayList:</h1>
+      <p style="color: white; font-size: 22px; padding-left: 16px; margin-top: -16px;"><span id="totalSong">-</span> songs</p>
+    </div>
+
+    <div class="flexLarge" style="padding: 16px;">
+
+      <div id="songImage" style="width: 100%; margin-top: 8px;">
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img id="imgsrc" src="" alt="Image" style="max-width: 100%; width: 100%; max-height: 300px;" />
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <h1 style="text-align: center; color: white; float: right;">Now Playing</h1>
+            <div style="display: flex; justify-content: space-between; padding-left: 8px;">
+              <span id="repeat" onclick="repeatMusic(1)" class="green" style="display: block; border-radius: 50%; width: 32px; height: 32px;"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg></span>
+              <span id="shuffle" onclick="repeatMusic(0)" style="display: block; border-radius: 50%; width: 32px; height: 32px;"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg></span>
+            </div>
+          </div>
+          <p id="musicName" style="text-align: center; color: rgb(6, 189, 0); margin-top: -10px;">Audio Name</p>
+          <div style="display: flex; justify-content: center;;">
+            <div style="display: flex; justify-content: space-around; width: 200px;">
+              <span onclick="prevMusic()"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 6h2v12H6zm3.5 6l8.5 6V6l-8.5 6zm6.5 2.14L12.97 12 16 9.86v4.28z"/></svg></span>
+              <span onclick="togglePlayMusic(1)" id="playButton" style="display: block; background-color: green; border-radius: 50%; width: 32px; height: 32px;"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><g><rect fill="none" height="24" width="24"/><path d="M12,4c4.41,0,8,3.59,8,8s-3.59,8-8,8s-8-3.59-8-8S7.59,4,12,4 M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10 s10-4.48,10-10C22,6.48,17.52,2,12,2L12,2z M11,8H9v8h2V8z M17,12l-5-4v8L17,12z"/></g></svg></span>
+              <span onclick="togglePlayMusic(0)" class="hide" id="pauseButton" style="display: block; background-color: green; border-radius: 50%; width: 32px; height: 32px;"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M9,16h2V8H9V16z M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 s3.59-8,8-8s8,3.59,8,8S16.41,20,12,20z M13,16h2V8h-2V16z"/></g></g></svg></span>
+              <span onclick="nextMusic()"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg></span>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+
+      <div id="songList" style="width: 100%;">
+        <!-- <div style="padding-top: 12px;">
+          <div style="color: white; font-size: 20px; margin-left: 8px;">Audio name</div>
+          <audio onclick="c()" style="width: 100%;" controls>
+            <source id="s" src="" type="audio/mpeg">
+          Your browser does not support the audio element.
+          </audio>
+        </div> -->
+
+        
+      </div>
+    </div>
+
+  </div>
+
+
+
+    
+
+    <script src="songlist.js"></script>
+</body>
+</html>
